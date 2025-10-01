@@ -38,7 +38,7 @@ namespace LexCorp.ProductsApp.Tests.Product
 
       var providerMock = new Mock<ILazyLoadingDefaultDtoProvider>();
 
-      var repositoryMock = new Mock<IDProductRepository>();
+      var repositoryMock = new Mock<IDProductLazyRepository>();
       repositoryMock.Setup(r => r.LazyListAsync(lazyLoadingDto)).ReturnsAsync(products);
 
       var loggerMock = new Mock<ILogger<GetProductsLazyListService>>();
@@ -66,7 +66,7 @@ namespace LexCorp.ProductsApp.Tests.Product
 
       var providerMock = new Mock<ILazyLoadingDefaultDtoProvider>();
 
-      var repositoryMock = new Mock<IDProductRepository>();
+      var repositoryMock = new Mock<IDProductLazyRepository>();
 
       var loggerMock = new Mock<ILogger<GetProductsLazyListService>>();
 
@@ -98,7 +98,7 @@ namespace LexCorp.ProductsApp.Tests.Product
       var providerMock = new Mock<ILazyLoadingDefaultDtoProvider>();
       providerMock.Setup(p => p.GetDefaultLazyLoadingDto()).Returns(defaultDto);
 
-      var repositoryMock = new Mock<IDProductRepository>();
+      var repositoryMock = new Mock<IDProductLazyRepository>();
       repositoryMock.Setup(r => r.LazyListAsync(defaultDto)).ReturnsAsync(products);
 
       var loggerMock = new Mock<ILogger<GetProductsLazyListService>>();
@@ -126,7 +126,7 @@ namespace LexCorp.ProductsApp.Tests.Product
 
       var providerMock = new Mock<ILazyLoadingDefaultDtoProvider>();
 
-      var repositoryMock = new Mock<IDProductRepository>();
+      var repositoryMock = new Mock<IDProductLazyRepository>();
       repositoryMock.Setup(r => r.LazyListAsync(lazyLoadingDto)).ThrowsAsync(new Exception("Database error"));
 
       var loggerMock = new Mock<ILogger<GetProductsLazyListService>>();

@@ -220,5 +220,97 @@ namespace LexCorp.ProductsApp.Tests.ProductManagement
 
       Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
     }
+
+    /// <summary>
+    /// Tests that the UpdateProductQtyV2 endpoint successfully enqueues the product update request.
+    /// </summary>
+    [Fact]
+    public async Task UpdateProductQtyV2_ShouldEnqueueRequest_WhenValidationPasses()
+    {
+      var updateDto = new ProductUpdateQtyDto
+      {
+        Guid = _TestProductDto.Guid,
+        Quantity = 15
+      };
+
+      var content = new StringContent(JsonConvert.SerializeObject(updateDto), Encoding.UTF8, "application/json");
+      var response = await _Client.PutAsync("/api/v2/ProductManagement/UpdateProductQtyV2", content);
+      response.EnsureSuccessStatusCode();
+
+      var responseContent = await response.Content.ReadAsStringAsync();
+      var result = JsonConvert.DeserializeObject<ResultInfoDto>(responseContent);
+
+      Assert.True(result.Success);
+      Assert.Contains("Message enqueued successfully.", result.Messages[0]);
+    }
+
+    /// <summary>
+    /// Tests that the UpdateProductQtyV2 endpoint returns an error when the product does not exist.
+    /// </summary>
+    [Fact]
+    public async Task UpdateProductQtyV2_ShouldReturnError_WhenProductDoesNotExist()
+    {
+      var updateDto = new ProductUpdateQtyDto
+      {
+        Guid = Guid.NewGuid(),
+        Quantity = 15
+      };
+
+      var content = new StringContent(JsonConvert.SerializeObject(updateDto), Encoding.UTF8, "application/json");
+      var response = await _Client.PutAsync("/api/v2/ProductManagement/UpdateProductQtyV2", content);
+
+      Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
+
+      var responseContent = await response.Content.ReadAsStringAsync();
+      var result = JsonConvert.DeserializeObject<ResultInfoDto>(responseContent);
+
+      Assert.False(result.Success);
+      Assert.Contains("Product not found.", result.Messages[0]);
+    }
+
+    /// <summary>
+    /// Tests that the UpdateProductQtyV2 endpoint returns an error when the quantity is negative.
+    /// </summary>
+    [Fact]
+    public async Task UpdateProductQtyV2_ShouldReturnError_WhenQuantityIsNegative()
+    {
+      var updateDto = new ProductUpdateQtyDto
+      {
+        Guid = _TestProductDto.Guid,
+        Quantity = -10
+      };
+
+      var content = new StringContent(JsonConvert.SerializeObject(updateDto), Encoding.UTF8, "application/json");
+      var response = await _Client.PutAsync("/api/v2/ProductManagement/UpdateProductQtyV2", content);
+
+      Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
+
+      var responseContent = await response.Content.ReadAsStringAsync();
+      var result = JsonConvert.DeserializeObject<ResultInfoDto>(responseContent);
+
+      Assert.False(result.Success);
+      Assert.Contains("Quantity cannot be negative.", result.Messages[0]);
+    }
+
+    /// <summary>
+    /// Tests that the UpdateProductQtyV2 endpoint returns 401 Unauthorized when no Bearer token is provided.
+    /// </summary>
+    [Fact]
+    public async Task UpdateProductQtyV2_ShouldReturnUnauthorized_WhenNoBearerTokenProvided()
+    {
+      var updateDto = new ProductUpdateQtyDto
+      {
+        Guid = _TestProductDto.Guid,
+        Quantity = 15
+      };
+
+      var content = new StringContent(JsonConvert.SerializeObject(updateDto), Encoding.UTF8, "application/json");
+
+      _Client.DefaultRequestHeaders.Authorization = null;
+
+      var response = await _Client.PutAsync("/api/v2/ProductManagement/UpdateProductQtyV2", content);
+
+      Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
+    }
   }
 }

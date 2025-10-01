@@ -1,8 +1,11 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using LexCorp.Channels.Queue.Extensions;
 using LexCorp.LazyLoading.Filter.Extensions;
 using LexCorp.Product.App.Extensions;
 using LexCorp.Product.Data.Extensions;
+using LexCorp.Product.Dto;
+using LexCorp.Product.ProductQtyQueueService.Extensions;
 using LexCorp.Products.Auth.App.Extensions;
 using LexCorp.Products.Data;
 using LexCorp.Products.Data.Seeder.Extensions;
@@ -23,6 +26,8 @@ builder.Services.AddProductsAuth(builder.Configuration);
 builder.Services.AddProductsData(builder.Configuration);
 builder.Services.AddProductsApp();
 builder.Services.AddLazyLoading(builder.Configuration);
+builder.Services.AddChannelQueue<ProductUpdateQtyDto>();
+builder.Services.AddProductsQtyQueueService();
 builder.Services.AddDataSeeder();
 
 builder.Services.AddControllers();

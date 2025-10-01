@@ -22,10 +22,12 @@
     <ProjectReference Include="..\Modules\Auth\LexCorp.Products.Auth.App.Abstractions\LexCorp.Products.Auth.App.Abstractions.csproj" />
     <ProjectReference Include="..\Modules\Auth\LexCorp.Products.Auth.App\LexCorp.Products.Auth.App.csproj" />
     <ProjectReference Include="..\Modules\Auth\LexCorp.Products.Auth.Dto\LexCorp.Products.Auth.Dto.csproj" />
+    <ProjectReference Include="..\Modules\LexCorp\LexCorp.Channels.Queue\LexCorp.Channels.Queue.csproj" />
     <ProjectReference Include="..\Modules\LexCorp\LexCorp.LazyLoading.Filter\LexCorp.LazyLoading.Filter.csproj" />
     <ProjectReference Include="..\Modules\Product\LexCorp.Product.App.Abstractions\LexCorp.Product.App.Abstractions.csproj" />
     <ProjectReference Include="..\Modules\Product\LexCorp.Product.App\LexCorp.Product.App.csproj" />
     <ProjectReference Include="..\Modules\Product\LexCorp.Product.Data\LexCorp.Product.Data.csproj" />
+    <ProjectReference Include="..\Modules\Product\QueueServices\LexCorp.Product.ProductQtyQueueService\LexCorp.Product.ProductQtyQueueService.csproj" />
   </ItemGroup>
 
 </Project>

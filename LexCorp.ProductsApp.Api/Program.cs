@@ -1,5 +1,8 @@
 using Asp.Versioning;
+using LexCorp.Products.Auth.App.Extensions;
+using LexCorp.Products.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -8,6 +11,9 @@ using System.IO;
 using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Registering application layers
+builder.Services.AddProductsAuth(builder.Configuration);
 
 builder.Services.AddControllers();
 
@@ -72,6 +78,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+
+using var scope = app.Services.CreateScope();
+//Database migrations
+var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+db.Database.Migrate();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

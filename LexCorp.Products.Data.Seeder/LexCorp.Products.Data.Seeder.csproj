@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SeedData\products.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SeedData\products.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LexCorp.Products.Data\LexCorp.Products.Data.csproj" />
+    <ProjectReference Include="..\Modules\Auth\LexCorp.Products.Auth.Dto\LexCorp.Products.Auth.Dto.csproj" />
+    <ProjectReference Include="..\Modules\Product\LexCorp.Product.Data.Abstractions\LexCorp.Product.Data.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

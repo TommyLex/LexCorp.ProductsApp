@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\LexCorp.ProductsApp\LexCorp.Products.Data.Seeder\LexCorp.Products.Data.Seeder.csproj" />
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\Auth\LexCorp.Products.Auth.App.Abstractions\LexCorp.Products.Auth.App.Abstractions.csproj" />
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\Auth\LexCorp.Products.Auth.App\LexCorp.Products.Auth.App.csproj" />
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\Auth\LexCorp.Products.Auth.Dto\LexCorp.Products.Auth.Dto.csproj" />

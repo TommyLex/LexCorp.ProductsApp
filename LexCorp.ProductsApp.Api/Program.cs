@@ -1,4 +1,6 @@
 using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using LexCorp.LazyLoading.Filter.Extensions;
 using LexCorp.Product.App.Extensions;
 using LexCorp.Product.Data.Extensions;
 using LexCorp.Products.Auth.App.Extensions;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
@@ -20,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddProductsAuth(builder.Configuration);
 builder.Services.AddProductsData(builder.Configuration);
 builder.Services.AddProductsApp();
+builder.Services.AddLazyLoading(builder.Configuration);
 builder.Services.AddDataSeeder();
 
 builder.Services.AddControllers();
@@ -39,13 +43,24 @@ apiVersionBuilder.AddApiExplorer(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(opt =>
 {
-  c.SupportNonNullableReferenceTypes();
-  c.SwaggerDoc("v1", new OpenApiInfo { Title = "Products App", Version = "v1" });
+  opt.SupportNonNullableReferenceTypes();
+  var provider = builder.Services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+  foreach (var description in provider.ApiVersionDescriptions)
+  {
+    opt.SwaggerDoc(
+        description.GroupName,
+        new OpenApiInfo
+        {
+          Title = $"Products App {description.ApiVersion}",
+          Version = description.ApiVersion.ToString()
+        });
+  }
 
   //https://github.com/domaindrivendev/Swashbuckle.AspNetCore#include-descriptions-from-xml-comments
-  c.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, "LexCorp.ProductsApp.Api.xml"));
+  opt.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, "LexCorp.ProductsApp.Api.xml"));
   var dtoDlls = Directory.GetFiles(AppContext.BaseDirectory, "*.Dto.dll")
                   .Select(x => System.IO.Path.GetFileNameWithoutExtension(x))
                   .Where(x => x.StartsWith("LexCorp."))
@@ -57,10 +72,10 @@ builder.Services.AddSwaggerGen(c =>
     {
       throw new Exception($"No documentation file found: {xmlFileName}");
     }
-    c.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, xmlFileName));
+    opt.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, xmlFileName));
   }
 
-  c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+  opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
   {
     In = ParameterLocation.Header,
     Description = "Please insert JWT with Bearer into field",
@@ -68,7 +83,7 @@ builder.Services.AddSwaggerGen(c =>
     Type = SecuritySchemeType.ApiKey
   });
 
-  c.AddSecurityRequirement(new OpenApiSecurityRequirement
+  opt.AddSecurityRequirement(new OpenApiSecurityRequirement
   {
     {
       new OpenApiSecurityScheme
@@ -99,9 +114,15 @@ await seeder.SeedDatabaseAsync();
 if (app.Environment.IsDevelopment())
 {
   app.UseSwagger();
-  app.UseSwaggerUI(c =>
+  app.UseSwaggerUI(opt =>
   {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auth API v1");
+    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+    foreach (var description in provider.ApiVersionDescriptions)
+    {
+      opt.SwaggerEndpoint(
+          $"/swagger/{description.GroupName}/swagger.json",
+          $"Products App {description.ApiVersion}");
+    }
   });
 }
 

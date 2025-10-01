@@ -4,4 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\LexCorp\LexCorp.Jwt.Dto\LexCorp.Jwt.Dto.csproj" />
+    <ProjectReference Include="..\..\LexCorp\LexCorp.Results.Dto\LexCorp.Results.Dto.csproj" />
+  </ItemGroup>
+
 </Project>

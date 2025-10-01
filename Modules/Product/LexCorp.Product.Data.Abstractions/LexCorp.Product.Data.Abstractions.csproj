@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\LexCorp\LexCorp.LazyLoading.Dto\LexCorp.LazyLoading.Dto.csproj" />
     <ProjectReference Include="..\LexCorp.Product.Dto\LexCorp.Product.Dto.csproj" />
   </ItemGroup>
 

@@ -22,6 +22,15 @@ namespace LexCorp.Product.App.Extensions
     /// <item>
     /// <description><see cref="IGetProductListService"/>: Service for retrieving a list of products.</description>
     /// </item>
+    /// <item>
+    /// <description><see cref="ICreateProductService"/>: Service for creating products.</description>
+    /// </item>
+    /// <item>
+    /// <description><see cref="IUpdateProductQtyService"/>: Service for updating product quantity.</description>
+    /// </item>
+    /// <item>
+    /// <description><see cref="IGetProductsLazyListService"/>: Service for retrieving a list of products with pagination.</description>
+    /// </item>
     /// </list>
     /// </remarks>
     public static void AddProductsApp(this IServiceCollection services)
@@ -30,6 +39,7 @@ namespace LexCorp.Product.App.Extensions
       services.AddTransient<IGetProductListService, GetProductListService>();
       services.AddTransient<ICreateProductService, CreateProductService>();
       services.AddTransient<IUpdateProductQtyService, UpdateProductQtyService>();
+      services.AddTransient<IGetProductsLazyListService, GetProductsLazyListService>();
     }
   }
 }

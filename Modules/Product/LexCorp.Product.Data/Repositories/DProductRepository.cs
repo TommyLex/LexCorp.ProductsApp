@@ -1,6 +1,8 @@
 ﻿using AutoMapper.QueryableExtensions;
 using LexCorp.Automapper.Abstractions.Map;
 using LexCorp.Data.Abstractions.Repository;
+using LexCorp.LazyLoading.Dto;
+using LexCorp.LazyLoading.Filter.Abstractions.Services;
 using LexCorp.Product.Data.Abstractions.Repositories;
 using LexCorp.Product.Dto;
 using LexCorp.Product.Dto.Exceptions;
@@ -15,7 +17,8 @@ namespace LexCorp.Product.Data.Repositories
       IToDto<DProduct, ProductDetailDto> toDto,
       IFromDto<DProduct, ProductDetailDto> fromDto,
       IToDto<DProduct, ProductListDto> _ToListDto,
-      IFromDto<DProduct, ProductCreateDto> _FromCreateDto) : ABaseRepository<DProduct, Guid, ProductDetailDto>(context, toDto, fromDto), IDProductRepository
+      IFromDto<DProduct, ProductCreateDto> _FromCreateDto,
+      ILazyLoadingFilterService _LazyLoadingFilterService) : ABaseRepository<DProduct, Guid, ProductDetailDto>(context, toDto, fromDto), IDProductRepository
   {
     ///<inheritdoc/>
     public async Task<bool> HasAnyProducts()
@@ -58,6 +61,22 @@ namespace LexCorp.Product.Data.Repositories
       await Context.SaveChangesAsync();
 
       return _ToDto.MapToDto(model);
+    }
+
+    ///<inheritdoc/>
+    public async Task<LazyLoadingResultDto<ProductListDto[]>> LazyListAsync(LazyLoadingDto lazyLoad)
+    {
+      IQueryable<ProductListDto> query = Context.Set<DProduct>()
+        .ProjectTo<ProductListDto>(_ToListDto.ConfigurationProvider);
+
+      query = _LazyLoadingFilterService.FilterAndOrder(lazyLoad, query);
+
+      return new LazyLoadingResultDto<ProductListDto[]>()
+      {
+        Total = query.Count(),
+        Data = await query.Skip(lazyLoad.First.Value).Take(lazyLoad.Rows.Value).ToArrayAsync(),
+        Success = true
+      };
     }
   }
 }

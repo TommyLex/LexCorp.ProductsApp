@@ -13,11 +13,11 @@ namespace LexCorp.Product.App.Services
   /// </summary>
   /// <param name="_LazyLoadingDtoValidator">The validator for validating lazy loading DTOs.</param>
   /// <param name="_LazyLoadingDefaultDtoProvider">The provider for default lazy loading DTOs.</param>
-  /// <param name="_DProductRepository">The repository for accessing product data.</param>
+  /// <param name="_DProductLazyRepository">The repository for lazy loading product data.</param>
   /// <param name="_Logger">The logger for logging information and errors.</param>
   public class GetProductsLazyListService(ILazyLoadingDtoValidator _LazyLoadingDtoValidator,
     ILazyLoadingDefaultDtoProvider _LazyLoadingDefaultDtoProvider,
-    IDProductRepository _DProductRepository,
+    IDProductLazyRepository _DProductLazyRepository,
     ILogger<GetProductsLazyListService> _Logger) : IGetProductsLazyListService
   {
     /// <summary>
@@ -44,7 +44,7 @@ namespace LexCorp.Product.App.Services
           }
         }
 
-        return await _DProductRepository.LazyListAsync(lazyLoadingDto);
+        return await _DProductLazyRepository.LazyListAsync(lazyLoadingDto);
       }
       catch (Exception ex)
       {

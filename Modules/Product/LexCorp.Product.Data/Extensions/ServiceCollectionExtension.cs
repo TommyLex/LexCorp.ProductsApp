@@ -30,6 +30,9 @@ namespace LexCorp.Product.Data.Extensions
     /// <description>Registers <see cref="IDProductRepository"/> with its implementation <see cref="DProductRepository"/> as a transient service.</description>
     /// </item>
     /// <item>
+    /// <description>Registers <see cref="IDProductLazyRepository"/> with its implementation <see cref="DProductLazyRepository"/> as a transient service.</description>
+    /// </item>
+    /// <item>
     /// <description>Registers <see cref="IToDto{TSource, TDestination}"/> for mapping <see cref="DProduct"/> to <see cref="ProductDetailDto"/> using <see cref="DProductDetailMap"/>.</description>
     /// </item>
     /// <item>
@@ -47,6 +50,7 @@ namespace LexCorp.Product.Data.Extensions
     {
       services.AddDatabaseContext(configuration);
       services.AddTransient<IDProductRepository, DProductRepository>();
+      services.AddTransient<IDProductLazyRepository, DProductLazyRepository>();
       services.AddTransient<IToDto<DProduct, ProductDetailDto>, DProductDetailMap>();
       services.AddTransient<IFromDto<DProduct, ProductDetailDto>, DProductDetailMap>();
       services.AddTransient<IToDto<DProduct, ProductListDto>, DProductListMap>();

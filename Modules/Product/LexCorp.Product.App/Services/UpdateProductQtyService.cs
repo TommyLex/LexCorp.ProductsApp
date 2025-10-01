@@ -1,4 +1,5 @@
-﻿using LexCorp.Product.App.Abstractions.Services;
+﻿using LexCorp.Channels.Queue.Abstractions.Providers;
+using LexCorp.Product.App.Abstractions.Services;
 using LexCorp.Product.Data.Abstractions.Repositories;
 using LexCorp.Product.Dto;
 using LexCorp.Product.Dto.Exceptions;
@@ -12,7 +13,10 @@ namespace LexCorp.Product.App.Services
   /// </summary>
   /// <param name="_ProductRepository">The product repository for accessing product data.</param>
   /// <param name="_Logger">The logger for logging information and errors.</param>
-  public class UpdateProductQtyService(IDProductRepository _ProductRepository, ILogger<UpdateProductQtyService> _Logger) : IUpdateProductQtyService
+  /// <param name="_Queue">Queue for updating product quantities.</param>
+  public class UpdateProductQtyService(IDProductRepository _ProductRepository, 
+    ILogger<UpdateProductQtyService> _Logger,
+    IGenericQueueChannelProvider<ProductUpdateQtyDto> _Queue) : IUpdateProductQtyService
   {
     /// <summary>
     /// Updates the quantity of a product.
@@ -44,5 +48,44 @@ namespace LexCorp.Product.App.Services
         return "An unexpected error occurred while updating the product quantity.";
       }
     }
+
+    /// <summary>
+    /// Validates the product update request and enqueues it into the in-memory queue for further processing.
+    /// </summary>
+    /// <param name="product">The product quantity update data transfer object.</param>
+    /// <returns>
+    /// A task representing the asynchronous operation. The task result contains a <see cref="ResultInfoDto"/>
+    /// indicating whether the operation was successful or contains error messages if validation or queuing fails.
+    /// </returns>
+    public async Task<ResultInfoDto> ValidateAndEnqueueAsync(ProductUpdateQtyDto product)
+    {
+      try
+      {
+        if (product.Quantity < 0)
+        {
+          _Logger.LogWarning($"Validation failed: Quantity cannot be negative. Product ID: {product.Guid}");
+          return new ResultInfoDto(false, "Quantity cannot be negative.");
+        }
+
+        var existingProduct = await _ProductRepository.GetAsync(product.Guid);
+        if (existingProduct == null)
+        {
+          _Logger.LogWarning($"Validation failed: Product not found. Product ID: {product.Guid}");
+          return new ResultInfoDto(false, "Product not found.");
+        }
+        
+        await _Queue.WriteAsync(product);
+        _Logger.LogInformation($"Product update enqueued successfully. Product ID: {product.Guid}");
+
+        return new ResultInfoDto(true, "Message enqueued successfully.");
+      }
+      catch (Exception ex)
+      {
+        _Logger.LogError(ex, $"An error occurred while enqueuing product update. Product ID: {product.Guid}");
+        return new ResultInfoDto(false, "An unexpected error occurred while enqueuing the product update.");
+      }
+    }
+
+   
   }
 }

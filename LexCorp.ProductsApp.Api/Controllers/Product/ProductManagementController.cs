@@ -15,6 +15,7 @@ namespace LexCorp.ProductsApp.Api.Controllers.Product
   [ApiController]
   [Route("api/v{version:apiVersion}/[controller]")]
   [ApiVersion("1.0")]
+  [ApiVersion("2.0")]
   [Authorize(Roles = nameof(RoleType.Admin) + "," + nameof(RoleType.ProductManager))]
   public class ProductManagementController : Controller
   {
@@ -70,6 +71,26 @@ namespace LexCorp.ProductsApp.Api.Controllers.Product
         return BadRequest(result);
       }
       return Ok(result);
+    }
+
+    /// <summary>
+    /// Enqueues request for change of quantity of a product.
+    /// </summary>
+    /// <param name="product">The product quantity update data transfer object.</param>
+    /// <returns>
+    /// A task representing the asynchronous operation. The task result contains a <see cref="ResultInfoDto"/>
+    /// with success property and error messages if the enqueue or validation operation fails.
+    /// </returns>
+    [MapToApiVersion("2.0")]
+    [HttpPut("[action]")]
+    public async Task<ActionResult<ResultInfoDto>> UpdateProductQtyV2([FromBody] ProductUpdateQtyDto product)
+    {
+      var result = await _UpdateProductQtyService.ValidateAndEnqueueAsync(product);
+      if (!result.Success)
+      {
+        return BadRequest(result);
+      }
+      return Accepted(result);
     }
   }
 }

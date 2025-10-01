@@ -1,18 +1,11 @@
-﻿using LexCorp.Product.Data.Abstractions.Repositories;
+﻿using LexCorp.LazyLoading.Dto;
+using LexCorp.Product.Data.Abstractions.Repositories;
 using LexCorp.Product.Dto;
-using LexCorp.Products.Data.Models.Auth;
 using LexCorp.Results.Dto;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace LexCorp.ProductsApp.Tests.Product
 {
@@ -118,6 +111,45 @@ namespace LexCorp.ProductsApp.Tests.Product
 
       Assert.False(result.Success);
       Assert.Contains("Product not found", result.Messages[0]);
+    }
+
+    /// <summary>
+    /// Tests that the GetLazyProductsList endpoint returns a lazy-loaded list of products when valid parameters are provided.
+    /// </summary>
+    [Fact]
+    public async Task GetLazyProductsList_ShouldReturnLazyLoadedProducts_WhenDtoIsValid()
+    {
+      var lazyLoadingDto = new LazyLoadingDto { First = 1, Rows = 10 };
+      var content = new StringContent(JsonConvert.SerializeObject(lazyLoadingDto), Encoding.UTF8, "application/json");
+
+      var response = await _Client.PostAsync("/api/v2/Product/GetLazyProductsList", content);
+      response.EnsureSuccessStatusCode();
+
+      var responseContent = await response.Content.ReadAsStringAsync();
+      var result = JsonConvert.DeserializeObject<ResultInfoDto<IEnumerable<ProductListDto>>>(responseContent);
+
+      Assert.True(result.Success);
+      Assert.NotNull(result.Data);
+    }
+
+    /// <summary>
+    /// Tests that the GetLazyProductsList endpoint returns an error when invalid parameters are provided.
+    /// </summary>
+    [Fact]
+    public async Task GetLazyProductsList_ShouldReturnError_WhenDtoIsInvalid()
+    {
+      var lazyLoadingDto = new LazyLoadingDto { First = null, Rows = null };
+      var content = new StringContent(JsonConvert.SerializeObject(lazyLoadingDto), Encoding.UTF8, "application/json");
+
+      var response = await _Client.PostAsync("/api/v2/Product/GetLazyProductsList", content);
+
+      Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
+
+      var responseContent = await response.Content.ReadAsStringAsync();
+      var result = JsonConvert.DeserializeObject<ResultInfoDto<IEnumerable<ProductListDto>>>(responseContent);
+
+      Assert.False(result.Success);
+      Assert.Contains("Parameters for lazy loading are not valid", result.Messages[0]);
     }
   }
 }

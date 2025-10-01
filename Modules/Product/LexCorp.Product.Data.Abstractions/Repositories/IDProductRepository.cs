@@ -1,4 +1,5 @@
-﻿using LexCorp.Product.Dto;
+﻿using LexCorp.LazyLoading.Dto;
+using LexCorp.Product.Dto;
 using LexCorp.Product.Dto.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -77,5 +78,12 @@ namespace LexCorp.Product.Data.Abstractions.Repositories
     /// <returns>Updated product detail dto.</returns>
     /// <exception cref="ProductNotFoundException">If product is not found by its identificator.</exception>
     Task<ProductDetailDto> UpdateProductQty(ProductUpdateQtyDto product);
+
+    /// <summary>
+    /// Returns a paginated list of products based on the provided lazy loading parameters.
+    /// </summary>
+    /// <param name="lazyLoad">Parameters for lazy loading.</param>
+    /// <returns>Paginated list of products based on the provided lazy loading parameters.</returns>
+    Task<LazyLoadingResultDto<ProductListDto[]>> LazyListAsync(LazyLoadingDto lazyLoad);
   }
 }

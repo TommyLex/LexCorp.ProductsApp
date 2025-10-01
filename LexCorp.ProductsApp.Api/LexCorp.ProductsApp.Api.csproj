@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\Auth\LexCorp.Products.Auth.App\LexCorp.Products.Auth.App.csproj" />
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\Auth\LexCorp.Products.Auth.Dto\LexCorp.Products.Auth.Dto.csproj" />
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\LexCorp\LexCorp.Jwt.Dto\LexCorp.Jwt.Dto.csproj" />
+    <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\LexCorp\LexCorp.LazyLoading.Filter\LexCorp.LazyLoading.Filter.csproj" />
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\LexCorp\LexCorp.Results.Dto\LexCorp.Results.Dto.csproj" />
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\Product\LexCorp.Product.App.Abstractions\LexCorp.Product.App.Abstractions.csproj" />
     <ProjectReference Include="..\..\LexCorp.ProductsApp\Modules\Product\LexCorp.Product.App\LexCorp.Product.App.csproj" />

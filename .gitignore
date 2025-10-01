@@ -236,7 +236,6 @@ _Pvt_Extensions
 sql/.DS_Store
 /Directory.Build.props
 /.claude/settings.local.json
-/Modules/Evidence/Pds.ProPlaCloud.Evidence.App/BusinessLogic/PL_SablonaISLH.Designer.cs
 
 #unit tests results
 /TestResults

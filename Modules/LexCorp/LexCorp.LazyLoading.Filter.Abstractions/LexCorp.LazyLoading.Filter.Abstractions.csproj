@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LexCorp.LazyLoading.Dto\LexCorp.LazyLoading.Dto.csproj" />
+  </ItemGroup>
+
 </Project>

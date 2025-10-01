@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\LexCorp\LexCorp.LazyLoading.Filter.Abstractions\LexCorp.LazyLoading.Filter.Abstractions.csproj" />
     <ProjectReference Include="..\..\LexCorp\LexCorp.Results.Dto\LexCorp.Results.Dto.csproj" />
     <ProjectReference Include="..\LexCorp.Product.App.Abstractions\LexCorp.Product.App.Abstractions.csproj" />
     <ProjectReference Include="..\LexCorp.Product.Data.Abstractions\LexCorp.Product.Data.Abstractions.csproj" />

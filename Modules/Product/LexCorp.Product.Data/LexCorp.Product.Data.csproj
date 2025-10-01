@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\LexCorp.Products.Data\LexCorp.Products.Data.csproj" />
     <ProjectReference Include="..\..\LexCorp\LexCorp.Data.Abstractions\LexCorp.Data.Abstractions.csproj" />
+    <ProjectReference Include="..\..\LexCorp\LexCorp.LazyLoading.Filter.Abstractions\LexCorp.LazyLoading.Filter.Abstractions.csproj" />
     <ProjectReference Include="..\LexCorp.Product.Data.Abstractions\LexCorp.Product.Data.Abstractions.csproj" />
     <ProjectReference Include="..\LexCorp.Product.Dto\LexCorp.Product.Dto.csproj" />
   </ItemGroup>

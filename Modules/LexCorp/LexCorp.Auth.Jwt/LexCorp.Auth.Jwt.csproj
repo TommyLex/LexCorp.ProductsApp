@@ -11,6 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\LexCorp.Auth.Claims.Abstractions\LexCorp.Auth.Claims.Abstractions.csproj" />
 	  <ProjectReference Include="..\LexCorp.Auth.Jwt.Abstractions\LexCorp.Auth.Jwt.Abstractions.csproj" />
 	</ItemGroup>
 

@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexCorp.Product.Data.Abstra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexCorp.Product.Dto", "..\LexCorp.ProductsApp\Modules\Product\LexCorp.Product.Dto\LexCorp.Product.Dto.csproj", "{DEC55CDF-5F25-414C-08D7-D14317CEF350}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexCorp.Products.Data.Seeder", "..\LexCorp.ProductsApp\LexCorp.Products.Data.Seeder\LexCorp.Products.Data.Seeder.csproj", "{902ABFE1-A1F7-FE6E-D8F3-259A424BA3A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,10 @@ Global
 		{DEC55CDF-5F25-414C-08D7-D14317CEF350}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEC55CDF-5F25-414C-08D7-D14317CEF350}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEC55CDF-5F25-414C-08D7-D14317CEF350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{902ABFE1-A1F7-FE6E-D8F3-259A424BA3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{902ABFE1-A1F7-FE6E-D8F3-259A424BA3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{902ABFE1-A1F7-FE6E-D8F3-259A424BA3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{902ABFE1-A1F7-FE6E-D8F3-259A424BA3A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

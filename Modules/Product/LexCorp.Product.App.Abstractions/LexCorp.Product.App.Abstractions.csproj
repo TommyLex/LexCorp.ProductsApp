@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\LexCorp\LexCorp.Results.Dto\LexCorp.Results.Dto.csproj" />
+    <ProjectReference Include="..\LexCorp.Product.Dto\LexCorp.Product.Dto.csproj" />
+  </ItemGroup>
+
+</Project>

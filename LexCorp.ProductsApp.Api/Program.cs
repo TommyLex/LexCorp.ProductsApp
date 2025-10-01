@@ -1,4 +1,6 @@
 using Asp.Versioning;
+using LexCorp.Product.App.Extensions;
+using LexCorp.Product.Data.Extensions;
 using LexCorp.Products.Auth.App.Extensions;
 using LexCorp.Products.Data;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Registering application layers
 builder.Services.AddProductsAuth(builder.Configuration);
+builder.Services.AddProductsData(builder.Configuration);
+builder.Services.AddProductsApp();
 
 builder.Services.AddControllers();
 
@@ -84,6 +88,7 @@ using var scope = app.Services.CreateScope();
 //Database migrations
 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 db.Database.Migrate();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

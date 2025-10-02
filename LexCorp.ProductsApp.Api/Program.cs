@@ -10,6 +10,7 @@ using LexCorp.Products.Auth.App.Extensions;
 using LexCorp.Products.Data;
 using LexCorp.Products.Data.Seeder.Extensions;
 using LexCorp.Products.Data.Seeder.Services;
+using LexCorp.ProductsApp.Api.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,7 @@ builder.Services.AddChannelQueue<ProductUpdateQtyDto>();
 builder.Services.AddProductsQtyQueueService();
 builder.Services.AddDataSeeder();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 var apiVersionBuilder = builder.Services.AddApiVersioning(options =>
 {
@@ -129,6 +130,8 @@ if (app.Environment.IsDevelopment())
     }
   });
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

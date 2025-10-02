@@ -52,9 +52,9 @@ The connection string to the database can be configured in appsettings.json.
 
 **Option 2 – Using .NET CLI**
 
-`dotnet build`
+`dotnet build LexCorp.ProductsApp.sln`
 
-`dotnet run --project ./ProductApiDemo`
+`dotnet run`
 
 # Running Unit Tests
 **Option 1 – Visual Studio Test Explorer**
